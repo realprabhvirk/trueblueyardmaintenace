@@ -1,0 +1,346 @@
+# True Blue Yard Maintenance: Website Build Brief
+
+Paste this entire document into Claude Code as your first message in a fresh session, in this project's folder. Don't summarize it, execute it. Before any code gets written, do the Step Zero checks in section 0, then run the photo sourcing step in section 3.
+
+---
+
+## 0. Operating rules (read first, obey throughout)
+
+### 0.1 Git rule (check before anything else)
+
+1. Run `git rev-parse --is-inside-work-tree`, `git remote -v` and `git branch --show-current` in the session's root folder.
+2. **If this folder is a GitHub repo:**
+   - Work directly on `main`. Always.
+   - Commit and push everything to `main` after every meaningful change, and once more at the end. No leftover uncommitted work.
+   - No feature branches, no pull requests, no worktrees.
+   - **No preview URLs.** Do not set up, trigger or mention Vercel, Netlify, GitHub Pages preview deploys or any other preview link. The site is verified locally by opening `index.html` directly.
+   - Short plain commit messages. No long dash characters in commit messages either.
+3. **If this folder is NOT a git repo:** disregard every git instruction above. Do not run `git init`, do not create a repo, do not create a remote. Just create and update the website files in this folder.
+
+### 0.2 Hard content rule: no long dashes, anywhere
+
+**Strictly no em dashes (the long dash, Unicode U+2014) anywhere on the website.** That covers visible copy, headings, buttons, alt text, `<title>`, meta descriptions, Open Graph tags, JSON-LD, ARIA labels, HTML comments, CSS comments, JS comments and any README.
+
+- Normal hyphens (`-`) are fine.
+- For ranges use the word "to" ("7am to 6pm"), never a dash character. This also avoids en dashes.
+- If a sentence wants a long dash, rewrite it with a comma, colon, full stop or brackets.
+- Before every commit, and again at the end, run this check and fix every hit until it returns nothing:
+
+```
+grep -rn $'\xe2\x80\x94' --include='*.html' --include='*.css' --include='*.js' --include='*.md' --include='*.json' --include='*.svg' --include='*.txt' .
+```
+
+### 0.3 Honesty rule
+
+Every fact on the site must come from section 2 below or from a live source you can point to. Anything marked **TO CONFIRM** in section 12 does not get published as a hard claim. No invented reviews, quotes, years in business, staff names, prices, licence numbers or service suburbs.
+
+---
+
+## 1. Role and project overview
+
+You are building a real, paid-studio-quality website for a real Brisbane lawn and yard business. This is not a template exercise. It will be judged next to the client's competitors in Google results, so it has to look like it belongs to a crew that actually does this work, not like generic AI output.
+
+**Working directory rule (non-negotiable):** Work entirely inside the root folder this Claude Code session is already running in. Do not create a new project folder inside Downloads, OneDrive, Desktop, or anywhere else. This session's current folder IS the project root. All files, images, and assets for True Blue Yard Maintenance live inside it, and nothing gets written outside it unless you're explicitly told otherwise mid-session.
+
+**The angle to lean on hard:** this business has 127 Google reviews at 4.9 stars, and the words people keep using in those reviews are about the finish, not the machinery. The most repeated Google review themes are "clean area" (9 mentions), "neat lawn" (8), "yard tidying" (6) and "quick job" (5). That is the story: the job gets done fast and the place is left clean. Every page should come back to that. The brand idea is "True Blue" in the plain Aussie sense of dependable and straight up, and the design idea is the crisp edge of a freshly trimmed lawn.
+
+Do not default to generic lawn care language like "transform your outdoor space". Say what the crew actually does.
+
+---
+
+## 2. Client snapshot (confirmed facts only)
+
+| Item | Value | Source |
+|---|---|---|
+| Trading name | True Blue Yard Maintenance (exact casing) | Client, Google, Facebook |
+| Category | Lawn care service | Google Business Profile |
+| Type | Mobile service business, no shopfront | Google (no address shown), Facebook |
+| Base | Brisbane's Southside | Facebook page intro |
+| Service area | Brisbane, Logan and surrounding suburbs | Facebook page intro |
+| Phone | 0431 150 545 (link as `tel:+61431150545`) | Client, Google, Facebook |
+| Email | truebluebrisbane@gmail.com | Facebook page, directory listing |
+| Facebook | https://www.facebook.com/TrueBlueYardMaintenance/ | Live |
+| Instagram | @trueblueyard, https://www.instagram.com/trueblueyard/ | Live |
+| Google rating | 4.9 from 127 reviews (snapshot taken Monday 12 October 2026) | Client, Google Maps |
+| Hours seen on Google | Closes 6pm Monday, opens 7am Tuesday. Full weekly schedule not confirmed | Google Maps |
+| Insurance | "Fully insured" and "with ABN" | Their own Facebook and Instagram bios |
+| Quotes | "No obligation free quotes" | Their own Facebook page |
+| Website | None exists yet. Google shows "Add website" | Google Maps |
+
+**Google review themes (client-supplied snapshot, with mention counts):** clean area 9, neat lawn 8, yard tidying 6, quick job 5, rubbish removal 3, branch lopping 2, edge trimming 2, grass removal 2, plant removal 2, pressure washing 2.
+
+**Services from secondary sources (usable but verify before launch):** lawn mowing, hedge trimming, tree trimming and tree removal, weed spraying, ride-on and acreage mowing, mulching, pressure cleaning, garden and yard clean up. These came from a third-party directory listing, not from the business's own channels.
+
+**Do not use these (flagged as unreliable):**
+- The directory lists the location as "Brisbane QLD 4000" which is just the CBD postcode, not a real base.
+- The directory and Facebook say "open 24 hours / always open". Google shows a 6pm close. Do not publish "24 hours" anywhere.
+- "Since 2016" appears only on the directory. Do not publish it.
+- Staff first names appear in reviews hosted on the directory. Do not name anyone on the site.
+- The directory shows an ABN. Do not put it in the footer until it is checked (section 12).
+
+---
+
+## 3. Assets: logo and images
+
+### 3.1 Logo
+
+The logo is already supplied by the client as an image uploaded to this chat. Use it exactly as-is: no redrawing, no recolouring, no reinterpreting, no re-typesetting the wordmark.
+
+- Save it into `/images` as `true-blue-yard-maintenance-logo.png` (if the file is not already in the project folder, ask the person to drop it in before continuing).
+- What it is: a navy square with five leaves (three sage green, two pale blue-white) arranged in a loose circle, then "True Blue" in bold sage green and "Yard Maintenance" in a light weight pale tone underneath.
+- **The logo carries its own solid navy background.** Place it only on navy surfaces (header, hero, footer) so it blends in, or in a contained square with rounded corners on light sections. Never put it on white as a floating mark with a mismatched navy box and no intent.
+- Sample the exact hex values for navy, green and pale blue straight from the file with a script (Python PIL is fine) and use those as the palette anchors in section 5.
+- Generate a favicon (`/images/favicon.png`, 64 px) by cropping to the leaf mark only.
+- Generate an Open Graph image (`/images/og-image.jpg`, 1200 by 630) with the logo centred on the sampled navy.
+
+### 3.2 Photos (sourcing order, the client chose all of these)
+
+The client confirmed photos come from **their Google Business Profile, Facebook, Instagram, and stock images as a supplement.**
+
+1. **Their own work photos first.** Google (Photos, "By owner") and their Facebook and Instagram (53 posts) are the primary source. Their own photos of their own jobs are fair game on their own site.
+2. **Facebook and Instagram block automated fetching.** If you cannot open them, do not work around it with scrapers, mirrors or caches. Stop and tell the person to drop the photos into a folder called `/images/incoming`, then carry on from there. Check that folder at the start in case photos are already in it.
+3. **Stock images are a supplement only**, for atmosphere in hero or section backgrounds (close-up grass texture, a mower edge, hedge detail). Rules:
+   - Properly licensed only (Unsplash or Pexels style licences), subjects must be real Australian-looking lawns and gardens, never anything with a competing brand or logo visible.
+   - **Stock is never shown on the Gallery page and never captioned or implied as True Blue's work.** The Gallery is real jobs only.
+   - Record the source URL and licence for every stock image in an HTML comment next to where it is used.
+4. If you end up with fewer than 8 real work photos, build the Gallery with what exists and say so in the final QA report. Do not pad it with stock.
+
+### 3.3 Image pipeline
+
+- Inventory every image. Look at each one and identify what it actually shows (mown stripes, edged path, hedge before and after, trailer of green waste, pressure washed driveway).
+- Rename to `lowercase-kebab-case-descriptive.jpg`. No camera names, no `IMG_1234`, no `photo1`.
+- Create a `.webp` version alongside each original. Use `<picture>` with the webp source and jpg fallback.
+- Cap the longest edge at 2000 px for gallery images and 2400 px for the hero.
+- Write specific alt text for every image describing what is visible. No "lawn image".
+- Sort into: a hero and featured set (best 3 to 5) and the full gallery set.
+- Pairs that show before and after go together in the gallery and are labelled "Before" and "After" only if you can tell which is which.
+
+---
+
+## 4. Required file structure
+
+Exactly these files, no more, no less:
+
+```
+index.html
+services.html
+about.html
+gallery.html
+contact.html
+styles.css
+main.js
+/images
+```
+
+- Vanilla HTML, CSS and JS only. No framework, no build step, no npm dependency, no bundler.
+- No inline styles. No inline scripts (JSON-LD in a `<script type="application/ld+json">` block is the one allowed exception).
+- One shared `styles.css` and one shared `main.js` for all pages.
+- Must work by opening `index.html` directly from disk or dropping the folder on any static host.
+- Google Fonts via `<link>` is allowed, with `display=swap` and a sensible system fallback stack.
+
+---
+
+## 5. Design direction
+
+### 5.1 Clichés to avoid
+
+- No warm-cream background with a terracotta/clay accent and a big serif headline.
+- No near-black background with a single neon-green or acid accent used everywhere.
+- No hairline-rule "broadsheet" layout with dense newspaper columns.
+- No centered hero with a gradient-blob background and a generic stock photo of unrelated smiling people.
+- No numbered "01 / 02 / 03" feature cards unless there's a real sequence being described.
+- No emoji in copy or UI, no generic icon-pack icons standing in for real photography.
+- No filler marketing copy: "world-class," "premier," "unlock your potential," "passionate about delivering excellence." Every claim needs to be something you could actually back up from the snapshot in section 2.
+- Also avoid the stereotypical "lawn care green gradient with a cartoon mower" look. This is a navy-led brand.
+
+### 5.2 Colour palette (anchored to the real logo)
+
+Sample the true values from the logo file and replace the approximations below. Define all as CSS custom properties in `:root`. Names and roles:
+
+| Token | Approx value | Why it earns its place |
+|---|---|---|
+| `--navy` | #244B6E | The logo's own background. Header, hero, footer. This is the "True Blue". |
+| `--navy-deep` | #17334D | A darker step of the same navy for alternating sections and depth. |
+| `--leaf` | #6F9C64 | The logo's sage green. Stripes, rules, large display accents. |
+| `--leaf-bright` | #9CC78F | A lifted green for text and buttons on navy. The plain sage fails contrast on navy for small text, so this carries the readable green. |
+| `--mist` | #DCE7EE | The pale blue-white leaf. Panels, chips, soft dividers. |
+| `--paper` | #F4F8FA | Cool near-white page background for light sections. Cool, not cream. |
+
+Check WCAG AA on every text and background pairing you actually use. Adjust `--leaf-bright` and text colours until they pass. Body text on light sections is `--navy-deep`.
+
+### 5.3 Typography
+
+- **Display and headings:** Lexend, weights 700 and 300. The logo wordmark is a clean geometric sans with a heavy line over a light line, and Lexend carries that exact contrast, so headings feel like the logo grew into a website.
+- **Body:** Source Sans 3, 400 and 600. Sturdy, easy to read on a phone in a driveway.
+- Scale: large confident hero headline, restrained body size (17 to 18 px), generous line height.
+- Use the heavy-over-light pairing deliberately: a bold line followed by a light line in key headings, echoing the logo lockup.
+
+### 5.4 Signature element (spend the boldness here, everything else stays disciplined)
+
+**The mown-stripe band.** A band of alternating `--leaf` and slightly darker green stripes, exactly like a freshly mown lawn, made in pure CSS (`repeating-linear-gradient`) at a slight diagonal. It sits at the bottom of the hero and is cut with a hard, perfectly straight edge into the next section, like a trimmed lawn edge. On first scroll into view the stripes wipe in once, left to right.
+
+The same straight-edge cut is reused as the section divider on the other pages, but quietly (a thin stripe strip, no animation). Nothing else on the site gets a flashy treatment.
+
+### 5.5 Motion
+
+- Deliberate and sparse: the one stripe wipe, a gentle scroll reveal on section content, and hover and focus states.
+- Fully respect `prefers-reduced-motion`: when set, no motion at all (stripes appear already drawn, content visible immediately), not just slower motion.
+
+### 5.6 Quality floor (always)
+
+Fully responsive down to a 360 px phone. Visible keyboard focus states on every interactive element. Real descriptive alt text on every image. Semantic HTML5 throughout (`header`, `nav`, `main`, `section`, `footer`, one `h1` per page, correct heading order). Tap targets at least 44 px. Most visitors will arrive from Google on a phone, so design phone first.
+
+---
+
+## 6. Location and map handling (Type B: mobile service business)
+
+- **No map. No pin. No embed.** This business has no shopfront and Google shows no address.
+- Instead, a **service area statement**: "Based on Brisbane's Southside. Servicing Brisbane, Logan and surrounding suburbs." This is taken word for word in meaning from their Facebook intro.
+- Do not list individual suburbs. None are confirmed. If the client wants a suburb list later, it goes in as an update.
+- Include the line "Not sure if we cover your street? Call or text and we will tell you." This is a plain true statement of how to check.
+- Do not invent a street address anywhere, including in JSON-LD.
+
+---
+
+## 7. Page-by-page content brief
+
+### 7.1 `index.html` (Home)
+
+1. **Header (all pages):** logo on navy at left, nav links (Home, Services, About, Gallery, Contact), and a persistent "Call 0431 150 545" button. On mobile the nav collapses to a toggle, but the call button stays visible outside the menu.
+2. **Hero (navy):**
+   - Eyebrow: "Yard maintenance, Brisbane Southside and Logan"
+   - H1 direction: heavy line "Lawns mowed. Edges cut." then light line "Yard left clean." Keep it that short.
+   - Subline (one sentence): what they do and where, plain words.
+   - Two buttons: "Call 0431 150 545" (primary, `--leaf-bright` fill, navy text) and "Text for a free quote" (secondary outline, `sms:+61431150545`).
+   - Real work photo to the right on desktop and below the text on mobile. If no real photo is available, use a tight crop of the logo's leaf mark on `--navy-deep`, not a stock photo of people.
+   - The mown-stripe band closes the hero (signature element).
+3. **Proof strip:** three facts side by side, no icons: "4.9 on Google from 127 reviews", "Fully insured", "Free, no obligation quotes". Add small text "Google rating as at 12 October 2026" under the first. The rating text links to their Google Maps listing (find the real URL live).
+4. **What we do:** a two-column typographic index of the main services, each with a single plain line. Link to `services.html`. No icon cards. Large service names, light descriptive line.
+5. **What people mention in reviews:** a row of chips built from the real Google review themes with their counts ("Clean area, 9", "Neat lawn, 8", "Yard tidying, 6", "Quick job, 5"). Heading direction: "What the reviews keep saying". Subtext: "Themes from our Google reviews." No made-up quotes. If you can copy a real review verbatim from live Google, you may add up to two, with the reviewer's first name and last initial exactly as shown there. Otherwise leave quotes out.
+6. **How a job goes:** three real steps: call or text, free quote, job done and cleaned up. This is a genuine sequence so numbers are allowed, but keep it as a simple horizontal line, not three heavy cards.
+7. **Service area:** the statement from section 6, with the Facebook and Instagram links.
+8. **Closing call band (navy):** headline "Want a quote?" with the phone number huge and tappable, plus the text button.
+9. **Footer (all pages):** small logo, phone, email, Facebook, Instagram, service area line, "Fully insured", copyright with the year via no-JS static text. ABN only if confirmed (section 12).
+
+### 7.2 `services.html`
+
+Open with a short intro on how the crew works. Then group services, each with a short paragraph of what is actually involved. Groups:
+
+1. **Lawns:** lawn mowing, edge trimming, ride-on and acreage mowing, weed spraying, grass removal.
+2. **Hedges and trees:** hedge trimming, tree trimming, branch lopping. Tree removal only if confirmed (section 12), otherwise leave it off.
+3. **Yard clean ups:** yard tidying, garden clean ups, plant removal, rubbish removal and green waste.
+4. **Pressure washing and mulching:** pressure washing, mulching.
+
+Rules for this page: no prices anywhere (none are published, quotes are free). Services confirmed only by the directory are marked in section 12, not on the page. End with the closing call band. Add a short "Not on the list? Ask." line, which is true because quotes are free and no obligation.
+
+### 7.3 `about.html`
+
+The only confirmed story is how they work and what they stand behind, so build the page on that, written with weight. Do not invent an origin story, founder names or a start year.
+
+1. **Heading:** "Straight up yard work." Light line under it explaining the name: True Blue meaning dependable and genuine, stated as the brand's intent, not as a history claim.
+2. **How we work:** based on Brisbane's Southside, servicing Brisbane and Logan, free no obligation quotes, fully insured, ABN holders.
+3. **What we finish with:** the job is not done until the area is clean. Back this with the Google review themes ("clean area" is the most mentioned theme). Reference the 4.9 from 127 reviews once.
+4. **Where to find us:** Facebook and Instagram links, phone and email.
+5. A hidden-by-default owner story is NOT included. Leave it out until the client supplies it (section 12).
+
+### 7.4 `gallery.html`
+
+- Real jobs only (see 3.2). Masonry or CSS grid with consistent gaps, images lazy loaded.
+- Keyboard-accessible lightbox: Enter or click opens, Escape closes, left and right arrows move between images, focus is trapped while open and returned to the thumbnail on close.
+- Filter chips only if there are enough images in distinct categories (mowing, hedges, clean ups, pressure washing). Otherwise no filter.
+- Intro line pointing people to their Instagram @trueblueyard for more recent work.
+- If real photos are few, say less and show less. A small honest gallery beats a padded one.
+
+### 7.5 `contact.html`
+
+No form, no backend (client choice). Contact is click-to-call, text, email and socials only.
+
+1. **H1:** "Get a quote" with a light line: "Free and no obligation."
+2. **Large phone block:** 0431 150 545, `tel:` link, plus "Text us" `sms:` link.
+3. **Email:** truebluebrisbane@gmail.com as a `mailto:` link, with subject prefilled as "Quote request".
+4. **Socials:** Facebook and Instagram with their real links, opening in a new tab with `rel="noopener noreferrer"`.
+5. **Hours:** do not print a weekly schedule. Use "Call or text any time and we will get back to you." only if the client confirms (section 12). Until then, print nothing about hours at all.
+6. **Service area:** the statement from section 6.
+7. **What to tell us:** a short plain checklist of useful details to include in a text (suburb, what needs doing, rough lawn size, a photo if you have one). This reduces back and forth.
+
+---
+
+## 8. Copy and tone
+
+Write like someone who actually works there, not like an agency. Plain, active, specific language tied to the facts in section 2. Australian spelling (tidy, metre, mum). Short paragraphs, no adjective stacking, no exclamation marks, no emoji.
+
+**Bad (generic):** "We provide premier lawn care solutions tailored to your outdoor needs."
+
+**Good (specific):** "We mow, edge and blow down the paths, then check the yard before we leave."
+
+Wherever a claim appears, it must trace back to section 2. Phrases like "fast", "clean" and "neat" are allowed because they mirror real review themes. Avoid superlatives like "best in Brisbane".
+
+---
+
+## 9. `main.js` required functionality
+
+- Accessible mobile nav toggle: button with `aria-expanded` and `aria-controls`, keyboard operable, closes on outside click and on Escape, returns focus to the toggle.
+- Smooth scroll for on-page anchors, disabled under `prefers-reduced-motion`.
+- Scroll-triggered reveal using `IntersectionObserver`, fully off under `prefers-reduced-motion` (content simply visible).
+- The one-off mown-stripe wipe, triggered once when the hero band enters view, skipped entirely under reduced motion.
+- Keyboard-accessible lightbox for the gallery as described in 7.4.
+- Mark the current page link in the nav with `aria-current="page"`.
+- No contact form handling, no fetch calls, no backend. State this plainly in a comment at the top of the file (and no long dashes in that comment).
+
+---
+
+## 10. Technical, SEO and accessibility checklist
+
+- Semantic HTML5 on every page, one `h1`, correct heading order.
+- `<picture>` with `.webp` and jpg fallback, `loading="lazy"` on all below-the-fold images, width and height attributes set to prevent layout shift.
+- Unique descriptive alt text on every image.
+- Per-page unique `<title>` and meta description. Include the real service area words (Brisbane, Logan, Southside) and the service, written naturally, no keyword stuffing, no long dashes.
+- Open Graph and Twitter card tags using `/images/og-image.jpg`.
+- Favicon linked on every page.
+- LocalBusiness JSON-LD on `index.html` with: name, telephone (+61431150545), email, url (leave out until a domain exists), sameAs (Facebook and Instagram URLs), areaServed (Brisbane, Logan). **No street address.** **No aggregateRating block** (self-published review markup is against Google's guidelines and the count is owned by Google, not the site).
+- Visible focus outlines, never suppressed. `aria-label` on any icon-only control.
+- WCAG AA contrast checked on the real palette, including text on the stripe band.
+- `lang="en-AU"` on the `<html>` element.
+- No console errors, no broken links, no unused CSS at handoff.
+- All `tel:` and `sms:` links use the international format `+61431150545`.
+
+---
+
+## 11. Definition of done
+
+Tick every item before the final commit:
+
+- [ ] The real logo (not a redraw) is used, on navy surfaces, and the palette hex values were sampled from it.
+- [ ] Section 0.2 grep returns zero results across the whole project.
+- [ ] Phone number 0431 150 545 appears as a working `tel:` link in the header, hero, closing band and contact page.
+- [ ] No map, no street address, no invented suburb list anywhere.
+- [ ] The Gallery contains only real True Blue work photos. Stock appears nowhere in it.
+- [ ] Every image has a descriptive kebab-case filename, alt text and a webp version.
+- [ ] The only review claims are "4.9 from 127 Google reviews (as at 12 October 2026)" and the real review themes with counts. No invented quotes.
+- [ ] Nothing in section 12 is printed as a hard fact on the site.
+- [ ] Tested at 360, 768 and 1280 px widths. No horizontal scroll at any of them.
+- [ ] Keyboard only: tab through every page, open and close the nav and the lightbox.
+- [ ] `prefers-reduced-motion` tested: no animation at all.
+- [ ] No lorem ipsum, no placeholder text, no "coming soon".
+- [ ] Gut check: if you can picture this exact layout working for a different business with a name and logo swap, revise it. The mown-stripe band, the navy and leaf palette and the "clean finish" angle must make it unmistakably True Blue.
+- [ ] Git: if this is a GitHub repo, everything is committed and pushed to `main`, no preview URL created or mentioned. If it is not a repo, files are simply saved in the project folder.
+
+When finished, report back in five lines or fewer: pages built, how many real photos versus stock were used (and where each stock image came from), the result of the em dash check, git status (pushed to main or not a repo), and anything from section 12 that is still open.
+
+---
+
+## 12. Open items to confirm with the client before launch
+
+Nothing below is published as a hard claim on the site until the client confirms it.
+
+1. **Opening hours.** Google shows 7am to 6pm style hours (closing at 6pm on Monday, reopening 7am Tuesday), but the full week is unknown. Facebook says "always open" and a directory says "open 24 hours", which conflict with Google. Confirm real days and hours.
+2. **ABN.** A directory shows ABN 49 909 451 133. Check it against ABN Lookup and confirm it is theirs before it goes in the footer.
+3. **Years in business.** A directory says "since 2016". Not published until the client confirms their start year.
+4. **Owner and crew names.** First names appear in directory-hosted reviews. Not used. Ask whether the client wants an owner story and photo on the About page.
+5. **Service list.** Lawn mowing is certain. Edge trimming, branch lopping, yard tidying, rubbish removal, grass removal, plant removal and pressure washing are backed by Google review themes. Hedge trimming, tree trimming and removal, weed spraying, ride-on and acreage mowing, and mulching come only from a directory listing. Confirm each. In particular confirm whether they do full tree removals or only small trees and lopping.
+6. **Contact email.** truebluebrisbane@gmail.com came from Facebook and a directory. Confirm it is the address to publish and whether they want a branded domain email later.
+7. **Photo rights.** Photos pulled from Google, Facebook and Instagram are the client's own, but confirm none include customers' faces, house numbers or number plates that should be cropped or removed. Stock image sources and licences are logged in HTML comments.
+8. **Domain and Google listing.** No website exists yet. Once a domain is chosen, add it to the Google Business Profile ("Add website") and then add the `url` field to the JSON-LD.
+9. **Google review link.** Confirm the live Google Maps URL used for the rating link.
+10. **Review quotes.** If the client wants testimonials on the site, supply verbatim Google reviews with permission. None are included now.
+11. **Directory base location.** "Brisbane QLD 4000" on a directory is a placeholder. Not used. Confirm whether they want any suburb named as a base beyond "Southside".
